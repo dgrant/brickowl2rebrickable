@@ -1,5 +1,3 @@
-__author__ = 'david'
-
 import pprint
 from html.parser import HTMLParser
 
@@ -60,8 +58,10 @@ class ColorTableParser(HTMLParser):
             self._in_row = False
             self._row += 1
             self._col = 0
-            self._in_header = False
-            self.table_data.append(self._row_data)
+            if not self._in_header:
+                self.table_data.append(self._row_data)
+            else:
+                self._in_header = False
             self._row_data = None
 
     def handle_data(self, data):
@@ -117,4 +117,3 @@ def get_color_conversion_table():
     parser = ColorTableParser()
     parser.feed(html)
     return ColorTable(parser.table_data)
-    #print('table_data=', pprint.pformat(parser.table_data))

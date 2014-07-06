@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/dgrant/brickowl2rebrickable.png)](https://travis-ci.org/dgrant/dbrickowl2rebrickable) [![Coverage Status](https://coveralls.io/repos/dgrant/brickowl2rebrickable/badge.png)](https://coveralls.io/r/dgrant/brickowl2rebrickable)
+
 brickowl2rebrickable
 ====================
 

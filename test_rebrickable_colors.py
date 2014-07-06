@@ -71,6 +71,5 @@ class ColorTableParserTest(unittest.TestCase):
         self.parser.feed(WHOLE_TABLE % COLOR_ROW5_BROWN)
         self.assertEqual(self.parser.table_data, [{'Name': 'Brown', 'Num Sets': 905, 'Peeron Color': ['OldBrown'], 'Num Parts': 9037, 'RGB': '#583927', 'LEGO Color': ['Earth Orange', 'Brown'], 'BrickLink Color': [8], 'From Year': 1974, 'LDraw Color': [6], 'ID': 6, 'To Year': 2014}])
 
-
 if __name__ == '__main__':
     unittest.main()

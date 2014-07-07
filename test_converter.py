@@ -1,6 +1,6 @@
 import unittest
 import mock
-from mock import Mock
+from mock import Mock, MagicMock
 import urllib.request
 from urllib.parse import urlparse
 
@@ -32,8 +32,9 @@ class TestBrickOwl(unittest.TestCase):
     @mock.patch('urllib.request')
     def test_fetch_order(self, mock_request):
         # Setup
-        handle_mock = Mock()
+        handle_mock = MagicMock()
         mock_request.return_value = handle_mock
+        handle_mock.read.return_value = "['some json here']"
 
         # Call method-under-test
         self.brickOwl.fetch_order(1)

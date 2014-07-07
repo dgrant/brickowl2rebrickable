@@ -10,7 +10,7 @@ def main():
     args = parser.parse_args()
 
     b = BrickOwl(args.api_key)
-    b.create_rebrickable_csvs(args.orders)
+    b.export_to_rebrickable_csvs(args.orders)
 
 if __name__ == '__main__':
     main()

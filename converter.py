@@ -18,10 +18,12 @@ class BrickOwl(object):
         f = urllib.request.urlopen(self.URL % params)
         return f.read().decode('utf8')
 
-    def create_rebrickable_csv(self, brick_owl_order_number):
+    def export_to_rebrickable_csv(self, order_id):
         color_table = get_color_conversion_table()
-        brick_owl_order_json = json.loads(self.fetch_order(brick_owl_order_number))
+        brick_owl_order_json = json.loads(self.fetch_order(order_id))
         print(brick_owl_order_json)
+
+        # Fix up colors
         for item in brick_owl_order_json:
             print("****", item['name'])
             color_name = item['color_name']
@@ -31,31 +33,38 @@ class BrickOwl(object):
             item['rebrickable_color_id'] = color_table.get_color_id_from_brick_owl_name(color_name)
             #print("color name", color_name, "=> rebrickable color id=", rebrickable_color_id)
 
-        with open('brick_owl_order_{0}.csv'.format(brick_owl_order_number), 'w') as csvfile:
+        # Create a line for Rebrickable CSV file
+        rows = []
+        for item in brick_owl_order_json:
+            print(item)
+            done = False
+            # TODO: need to change this to be smarter, to choose ldraw or design_id or peeron_id, depending on which one has more sets in Rebrickable
+            #for id_type in ('ldraw', 'design_id',):
+            for id_type in ('design_id', 'ldraw',):
+                print("Trying id_type", id_type)
+                if not done:
+                    for id in item['ids']:
+                        print('id=', id)
+                        if id['type'] == id_type:
+                            part_id = id['id']
+                            print('part_id=', part_id)
+                            done = True
+                            break
+                if done:
+                    break
+            else:
+                print("!!! Could not find design_id or ldraw id for item: ", item['name'])
+                continue
+            rows.append([part_id, item['rebrickable_color_id'], item['ordered_quantity']])
+
+        # Writes lines to CSV file in Rebrickable format
+        with open('brick_owl_order_{0}.csv'.format(order_id), 'w') as csvfile:
             writer = csv.writer(csvfile, delimiter=',')
             writer.writerow(['Part', 'Color', 'Num'])
-            for item in brick_owl_order_json:
-                print(item)
-                done = False
-                #for id_type in ('ldraw', 'design_id',):
-                for id_type in ('design_id', 'ldraw',):
-                    print("Trying id_type", id_type)
-                    if not done:
-                        for id in item['ids']:
-                            print('id=', id)
-                            if id['type'] == id_type:
-                                part_id = id['id']
-                                print('part_id=', part_id)
-                                done = True
-                                break
-                    if done:
-                        break
-                else:
-                    print("!!! Could not find design_id or ldraw id for item: ", item['name'])
-                    continue
-                writer.writerow([part_id, item['rebrickable_color_id'], item['ordered_quantity']])
+            for row in rows:
+                writer.writerow(row)
 
 
-    def create_rebrickable_csvs(self, order_ids):
+    def export_to_rebrickable_csvs(self, order_ids):
         for order_id in order_ids:
-            self.create_rebrickable_csv(order_id)
+            self.export_to_rebrickable_csv(order_id)

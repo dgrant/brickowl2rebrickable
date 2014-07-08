@@ -3,21 +3,9 @@ import csv
 import urllib.request
 import urllib.parse
 import json
+import low_level
 
 from rebrickable_colors import get_color_conversion_table
-
-def do_http_get(url, params=None):
-    """
-    Perform an http get, returning the response data.
-
-    :param url: full url including protocol and port
-    :param params: dictionary of parameters
-    :return: the body of the HTTP response
-    """
-    if params != None:
-        url = (url + '?%s') % urllib.parse.urlencode(params)
-    f = urllib.request.urlopen(url)
-    return f.read().decode('utf8')
 
 class BrickOwl(object):
 
@@ -28,7 +16,7 @@ class BrickOwl(object):
 
     def fetch_order(self, order_id):
         params = {'key': self._api_key, 'order_id': order_id}
-        return do_http_get(self.URL, params)
+        return low_level.do_http_get(self.URL, params)
 
     def export_to_rebrickable_csv(self, order_id):
         color_table = get_color_conversion_table()

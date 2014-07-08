@@ -4,12 +4,13 @@ from mock import Mock, MagicMock
 import urllib.request
 from urllib.parse import urlparse
 
-from converter import BrickOwl
+import converter
 
 class Matcher(object):
     def __init__(self, compare, some_obj):
         self.compare = compare
         self.some_obj = some_obj
+
     def __eq__(self, other):
         return self.compare(self.some_obj, other)
 
@@ -27,18 +28,14 @@ def compare(first, second):
 
 class TestBrickOwl(unittest.TestCase):
     def setUp(self):
-        self.brickOwl = BrickOwl("API_KEY")
+        self.brickOwl = converter.BrickOwl("API_KEY")
 
-    @mock.patch('urllib.request')
-    def test_fetch_order(self, mock_request):
+    def test_fetch_order(self):
         # Setup
-        handle_mock = MagicMock()
-        mock_request.return_value = handle_mock
-        handle_mock.read.return_value = "['some json here']"
+        converter.do_http_get = Mock(return_value="['some json here']")
 
         # Call method-under-test
         self.brickOwl.fetch_order(1)
 
         # Verification
-        matcher = Matcher(compare, "https://api.brickowl.com/v1/order/items?order_id=1&key=API_KEY")
-        urllib.request.urlopen.assert_called_once_with(matcher)
+        converter.do_http_get.assert_called_once_with("https://api.brickowl.com/v1/order/items", {'order_id': 1, 'key': 'API_KEY'})

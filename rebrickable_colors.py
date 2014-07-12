@@ -1,7 +1,7 @@
-import pprint
 from html.parser import HTMLParser
 
-import urllib.request
+__author__ = 'david'
+
 
 def strarray(data):
     data = data.strip('{}')
@@ -9,8 +9,10 @@ def strarray(data):
     data = [x.strip('"') for x in data]
     return data
 
+
 def intarray(data):
     return [int(x) for x in strarray(data)]
+
 
 class ColorTableParser(HTMLParser):
     TYPES = {'ID': int,
@@ -76,6 +78,7 @@ class ColorTableParser(HTMLParser):
                 header_name = self._header_data[self._col]
                 self._row_data[header_name] = self.TYPES[header_name](data)
 
+
 class ColorTable(object):
     def __init__(self, data):
         self._data = data
@@ -110,10 +113,3 @@ class ColorTable(object):
 
         print("Name:", name, "is unmatched")
         return None
-
-def get_color_conversion_table():
-    f = urllib.request.urlopen('http://rebrickable.com/colors')
-    html = f.read().decode('utf8')
-    parser = ColorTableParser()
-    parser.feed(html)
-    return ColorTable(parser.table_data)

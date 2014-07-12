@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
-from converter import BrickOwl
+from brickowl import BrickOwl
 
 def main():
     parser = argparse.ArgumentParser(description='Convert Brickowl orders into Rebrickable csv files')

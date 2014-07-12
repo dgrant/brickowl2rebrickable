@@ -2,11 +2,11 @@ import unittest
 from mock import Mock, MagicMock
 
 import low_level
-import converter
+import brickowl
 
 class TestBrickOwl(unittest.TestCase):
     def setUp(self):
-        self.brickOwl = converter.BrickOwl("API_KEY")
+        self.brickOwl = brickowl.BrickOwl("API_KEY")
 
     def test_fetch_order(self):
         # Setup

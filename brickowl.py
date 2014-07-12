@@ -5,7 +5,7 @@ import urllib.parse
 import json
 import low_level
 
-from rebrickable_colors import get_color_conversion_table
+from rebrickable import Rebrickable
 
 class BrickOwl(object):
 
@@ -13,13 +13,13 @@ class BrickOwl(object):
 
     def __init__(self, api_key):
         self._api_key = api_key
+        self.rebrickable = Rebrickable()
 
     def fetch_order(self, order_id):
         params = {'key': self._api_key, 'order_id': order_id}
         return low_level.do_http_get(self.URL, params)
 
     def export_to_rebrickable_csv(self, order_id):
-        color_table = get_color_conversion_table()
         brick_owl_order_json = json.loads(self.fetch_order(order_id))
         print(brick_owl_order_json)
 
@@ -30,8 +30,8 @@ class BrickOwl(object):
             if color_name == "":
                 print("!!! Skipping item", item['name'], "because it has no color")
                 continue
-            item['rebrickable_color_id'] = color_table.get_color_id_from_brick_owl_name(color_name)
-            #print("color name", color_name, "=> rebrickable color id=", rebrickable_color_id)
+            item['rebrickable_color_id'] = self.rebrickable.get_color_id_from_brick_owl_name(color_name)
+            #print("color name", color_name, "=> rebrickable.py color id=", rebrickable_color_id)
 
         # Create a line for Rebrickable CSV file
         rows = []

@@ -1,5 +1,5 @@
-*.csv
-*.csv.bak
 __pycache__
 .coverage
 .idea
+temp
+brickowl2rebrickable.ini

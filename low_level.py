@@ -1,6 +1,7 @@
+import csv
+import hashlib
 import urllib.parse
 import urllib.request
-import csv
 
 __author__ = 'david'
 
@@ -24,3 +25,10 @@ def write_csv_file(filename, rows, header=None):
             writer.writerow(header)
         for row in rows:
             writer.writerow(row)
+
+def md5sum_file(filename):
+    m = hashlib.md5()
+    with open(filename) as f:
+        for line in f:
+            m.update(line.encode('utf8'))
+    return m.digest()

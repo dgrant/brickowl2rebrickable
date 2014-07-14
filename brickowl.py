@@ -1,7 +1,5 @@
 
-import csv
-import urllib.request
-import urllib.parse
+import os
 import json
 import low_level
 
@@ -19,7 +17,7 @@ class BrickOwl(object):
         params = {'key': self._api_key, 'order_id': order_id}
         return low_level.do_http_get(self.URL, params)
 
-    def export_to_rebrickable_csv(self, order_id):
+    def export_to_rebrickable_csv(self, order_id, output_dir):
         brick_owl_order_json = json.loads(self.fetch_order(order_id))
 
         # Fix up colors
@@ -55,9 +53,9 @@ class BrickOwl(object):
                 continue
             rows.append([part_id, item['rebrickable_color_id'], item['ordered_quantity']])
 
-        low_level.write_csv_file('brick_owl_order_{0}.csv'.format(order_id), rows, ['Part', 'Color', 'Num'])
+        low_level.write_csv_file(os.path.join(output_dir, 'brick_owl_order_{0}.csv'.format(order_id)), rows, ['Part', 'Color', 'Num'])
 
 
-    def export_to_rebrickable_csvs(self, order_ids):
+    def export_to_rebrickable_csvs(self, order_ids, output_dir):
         for order_id in order_ids:
-            self.export_to_rebrickable_csv(order_id)
+            self.export_to_rebrickable_csv(order_id, output_dir)

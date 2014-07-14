@@ -1,7 +1,7 @@
 import urllib.request
 
-from rebrickable_colors import ColorTableParser, ColorTable
-from low_level import do_http_get
+import rebrickable_colors
+import low_level
 
 class Rebrickable(object):
 
@@ -14,8 +14,8 @@ class Rebrickable(object):
         return self._color_table.get_color_id_from_brick_owl_name(brickowl_name)
 
     def _get_color_conversion_table(self):
-        print("got here")
-        html = do_http_get('http://rebrickable.com/colors')
-        parser = ColorTableParser()
+        html = low_level.do_http_get('http://rebrickable.com/colors')
+        parser = rebrickable_colors.ColorTableParser()
         parser.feed(html)
-        return ColorTable(parser.table_data)
+        table_data = parser.table_data
+        return rebrickable_colors.ColorTable(table_data)

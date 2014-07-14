@@ -111,5 +111,5 @@ class ColorTable(object):
         if name.find('gray') != -1:
             return self.get_color_id_from_brick_owl_name(name.replace('gray', 'grey'))
 
-        print("Name:", name, "is unmatched")
+        print("!!! Name:", name, "is unmatched")
         return None

@@ -1,5 +1,5 @@
 import unittest
-from rebrickable_colors import ColorTableParser
+import rebrickable_colors
 
 OPEN_TABLE_TAG = "<table class='table'>"
 HEADER = """<tr class='row_header'>
@@ -27,7 +27,7 @@ WHOLE_TABLE = OPEN_TABLE_TAG + HEADER + "%s" + CLOSE_TABLE_TAG
 
 class ColorTableParserTest(unittest.TestCase):
     def setUp(self):
-        self.parser = ColorTableParser()
+        self.parser = rebrickable_colors.ColorTableParser()
 
     def test_no_rows_except_header(self):
         """
@@ -70,3 +70,47 @@ class ColorTableParserTest(unittest.TestCase):
         """
         self.parser.feed(WHOLE_TABLE % COLOR_ROW5_BROWN)
         self.assertEqual(self.parser.table_data, [{'Name': 'Brown', 'Num Sets': 905, 'Peeron Color': ['OldBrown'], 'Num Parts': 9037, 'RGB': '#583927', 'LEGO Color': ['Earth Orange', 'Brown'], 'BrickLink Color': [8], 'From Year': 1974, 'LDraw Color': [6], 'ID': 6, 'To Year': 2014}])
+
+
+class ColorTableTest(unittest.TestCase):
+
+    def setUp(self):
+        # Setup
+        self.data = [{'Name': 'Speckle Black-Copper', 'Num Sets': 3, 'Peeron Color': ['BlackCopperGlitter', 'BlackGlitter'], 'Num Parts': 7, 'RGB': '#000000', 'BrickLink Color': [116], 'From Year': 2006, 'LDraw Color': [75], 'ID': 75, 'To Year': 2006},
+                {'Name': 'Chrome Silver', 'Num Sets': 429, 'Peeron Color': ['ChromeSilver'], 'Num Parts': 2364, 'RGB': '#E0E0E0', 'LEGO Color': ['Metalized Silver'], 'BrickLink Color': [22], 'From Year': 1977, 'LDraw Color': [383], 'ID': 383, 'To Year': 2014},
+                {'ID': 999},
+                {'ID': 666, 'LEGO Color': ['Trans-Green']},
+                {'ID': 555, 'LEGO Color': ['medium grey']}]
+
+        # Call method-under-test
+        self.instance = rebrickable_colors.ColorTable(self.data)
+
+    def test__parse(self):
+        instance = self.instance
+
+        # Verification
+        self.assertEqual(instance._data, self.data)
+
+        self.assertEqual(len(instance._lego_color_to_id), 3)
+        self.assertEqual(instance._lego_color_to_id['metalized silver'], 383)
+        self.assertEqual(instance._lego_color_to_id['trans-green'], 666)
+        self.assertEqual(instance._lego_color_to_id['medium grey'], 555)
+
+        self.assertEqual(len(instance._peeron_color_to_id), 3)
+        self.assertEqual(instance._peeron_color_to_id['blackcopperglitter'], 75)
+        self.assertEqual(instance._peeron_color_to_id['blackglitter'], 75)
+        self.assertEqual(instance._peeron_color_to_id['chromesilver'], 383)
+
+        self.assertEqual(len(instance._color_name_to_id), 2)
+        self.assertEqual(instance._color_name_to_id['speckle black-copper'], 75)
+        self.assertEqual(instance._color_name_to_id['chrome silver'], 383)
+
+    def test_get_color_id_from_brick_owl_name(self):
+        self.assertEqual(self.instance.get_color_id_from_brick_owl_name('Metalized Silver'), 383)
+        self.assertEqual(self.instance.get_color_id_from_brick_owl_name('blackglitter'), 75)
+        self.assertEqual(self.instance.get_color_id_from_brick_owl_name('speckle black-copper'), 75)
+        self.assertEqual(self.instance.get_color_id_from_brick_owl_name('transparent green'), 666)
+        self.assertEqual(self.instance.get_color_id_from_brick_owl_name('medium gray'), 555)
+        self.assertEqual(self.instance.get_color_id_from_brick_owl_name('blather'), None)
+        self.assertEqual(self.instance.get_color_id_from_brick_owl_name('transparent blather'), None)
+        self.assertEqual(self.instance.get_color_id_from_brick_owl_name('blather gray'), None)

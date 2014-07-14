@@ -18,15 +18,13 @@ class BrickOwl(object):
 
     def export_to_rebrickable_csv(self, order_id, output_dir):
         order_json = self.fetch_order(order_id)
-#        print(order_json)
         brick_owl_order_json = json.loads(order_json)
-        # print(brick_owl_order_json)
 
         # Fix up colors
         for item in brick_owl_order_json:
             color_name = item['color_name']
             if color_name == "":
-                print("!!! Skipping item", item['name'], "because it has no color")
+                print('!!! Skipping item "{0}" because it has no color'.format(item['name']))
                 continue
             item['rebrickable_color_id'] = self.rebrickable.get_color_id_from_brick_owl_name(color_name)
 
@@ -50,7 +48,7 @@ class BrickOwl(object):
                 if done:
                     break
             else:
-                print("!!! Could not find design_id or ldraw id for item: ", item['name'])
+                print('!!! Could not find design_id or ldraw id for item: "{0}"'.format(item['name']))
                 continue
             rows.append([part_id, item['rebrickable_color_id'], item['ordered_quantity']])
 

@@ -14,6 +14,7 @@ class Rebrickable(object):
         return self._color_table.get_color_id_from_brick_owl_name(brickowl_name)
 
     def _get_color_conversion_table(self):
+        print("got here")
         html = do_http_get('http://rebrickable.com/colors')
         parser = ColorTableParser()
         parser.feed(html)

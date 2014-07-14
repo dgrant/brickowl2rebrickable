@@ -2,8 +2,7 @@
 import os
 import json
 import low_level
-
-from rebrickable import Rebrickable
+import rebrickable
 
 class BrickOwl(object):
 
@@ -11,14 +10,17 @@ class BrickOwl(object):
 
     def __init__(self, api_key):
         self._api_key = api_key
-        self.rebrickable = Rebrickable()
+        self.rebrickable = rebrickable.Rebrickable()
 
     def fetch_order(self, order_id):
         params = {'key': self._api_key, 'order_id': order_id}
         return low_level.do_http_get(self.URL, params)
 
     def export_to_rebrickable_csv(self, order_id, output_dir):
-        brick_owl_order_json = json.loads(self.fetch_order(order_id))
+        order_json = self.fetch_order(order_id)
+#        print(order_json)
+        brick_owl_order_json = json.loads(order_json)
+        # print(brick_owl_order_json)
 
         # Fix up colors
         for item in brick_owl_order_json:
@@ -27,23 +29,22 @@ class BrickOwl(object):
                 print("!!! Skipping item", item['name'], "because it has no color")
                 continue
             item['rebrickable_color_id'] = self.rebrickable.get_color_id_from_brick_owl_name(color_name)
-            #print("color name", color_name, "=> rebrickable.py color id=", rebrickable_color_id)
 
         # Create a line for Rebrickable CSV file
         rows = []
         for item in brick_owl_order_json:
-            print(item)
+            #print(item)
             done = False
             # TODO: need to change this to be smarter, to choose ldraw or design_id or peeron_id, depending on which one has more sets in Rebrickable
             #for id_type in ('ldraw', 'design_id',):
             for id_type in ('design_id', 'ldraw',):
-                print("Trying id_type", id_type)
+                #print("Trying id_type", id_type)
                 if not done:
                     for id in item['ids']:
-                        print('id=', id)
+                        #print('id=', id)
                         if id['type'] == id_type:
                             part_id = id['id']
-                            print('part_id=', part_id)
+                            #print('part_id=', part_id)
                             done = True
                             break
                 if done:

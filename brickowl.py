@@ -21,11 +21,9 @@ class BrickOwl(object):
 
     def export_to_rebrickable_csv(self, order_id):
         brick_owl_order_json = json.loads(self.fetch_order(order_id))
-        print(brick_owl_order_json)
 
         # Fix up colors
         for item in brick_owl_order_json:
-            print("****", item['name'])
             color_name = item['color_name']
             if color_name == "":
                 print("!!! Skipping item", item['name'], "because it has no color")
@@ -57,12 +55,7 @@ class BrickOwl(object):
                 continue
             rows.append([part_id, item['rebrickable_color_id'], item['ordered_quantity']])
 
-        # Writes lines to CSV file in Rebrickable format
-        with open('brick_owl_order_{0}.csv'.format(order_id), 'w') as csvfile:
-            writer = csv.writer(csvfile, delimiter=',')
-            writer.writerow(['Part', 'Color', 'Num'])
-            for row in rows:
-                writer.writerow(row)
+        low_level.write_csv_file('brick_owl_order_{0}.csv'.format(order_id), rows, ['Part', 'Color', 'Num'])
 
 
     def export_to_rebrickable_csvs(self, order_ids):

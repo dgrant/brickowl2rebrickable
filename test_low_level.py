@@ -62,12 +62,9 @@ class TestLowLevel(unittest.TestCase):
         with patch('low_level.open', m, create=True):
             write_csv_file('filename', rows, header=header)
 
-            m.assert_called_with('filename', 'w')
-            #handle = m()
-            #csv_writer_mock.assert_called_once_with(handle, delimeter=',')
-            expected_calls = [call(['head', 'er']), call(['a', 'b']), call(['c', 'd'])]
-            writer = csv_writer_mock.return_value
-            self.assertEqual(writer.writerow.call_args_list, expected_calls)
-
-if __name__ == '__main__':
-    unittest.main()
+        m.assert_called_with('filename', 'w')
+        #handle = m()
+        #csv_writer_mock.assert_called_once_with(handle, delimeter=',')
+        expected_calls = [call(['head', 'er']), call(['a', 'b']), call(['c', 'd'])]
+        writer = csv_writer_mock.return_value
+        self.assertEqual(writer.writerow.call_args_list, expected_calls)

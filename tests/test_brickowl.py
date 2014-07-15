@@ -36,6 +36,9 @@ class TestBrickOwl(unittest.TestCase):
           "ids":[{"id":"2412","type":"design_id"},{"id":"2412b","type":"ldraw"},{"id":"2412b","type":"peeron_id"},{"id":"363948-50","type":"boid"},{"id":"4210631","type":"item_no"},{"id":"4210631","type":"item_no"}]},
          {"name":"LEGO White Plate 1 x 2 with Horizontal Clip on End (63868)",
           "ordered_quantity":"4","order_item_id":"608617","base_price":"0.082","color_name":"White","color_id":"92","lot_id":"287690",
+          "ids":[{"id":"4535737","type":"item_no"},{"id":"4535737","type":"item_no"},{"id":"537281-92","type":"boid"},{"id":"63868","type":"design_id"},{"id":"63868","type":"design_id"},{"id":"63868","type":"ldraw"},{"id":"63868","type":"peeron_id"}]},
+         {"name":"Something with no color",
+          "ordered_quantity":"4","order_item_id":"608617","base_price":"0.082","color_name":"","color_id":"92","lot_id":"287690",
           "ids":[{"id":"4535737","type":"item_no"},{"id":"4535737","type":"item_no"},{"id":"537281-92","type":"boid"},{"id":"63868","type":"design_id"},{"id":"63868","type":"design_id"},{"id":"63868","type":"ldraw"},{"id":"63868","type":"peeron_id"}]}]
         """
         r = RebrickableMock.return_value

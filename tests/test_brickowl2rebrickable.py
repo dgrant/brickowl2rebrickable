@@ -79,16 +79,18 @@ class TestBrickOwl2Rebrickable(unittest.TestCase):
         BrickOwlMock.assert_called_once_with(brickowl_api_key, rebrickable_api_key)
         BrickOwlMock.return_value.export_to_rebrickable_csvs.assert_called_once_with(orders, output_dir=output_dir)
 
+    @patch('brickowl2rebrickable_conf.get_rebrickable_api_key')
     @patch('brickowl2rebrickable_conf.get_brickowl_api_key')
     @patch('brickowl.BrickOwl')
-    def test_brickowl2rebrickable_no_apikey(self, BrickOwlMock, get_api_key_mock):
+    def test_brickowl2rebrickable_no_apikeys(self, BrickOwlMock, get_brickowl_api_key_mock, get_rebrickable_api_key_mock):
         # Setup
         orders = ['1', '2']
         output_dir = 'blather'
-        get_api_key_mock.return_value = None
+        get_brickowl_api_key_mock.return_value = None
+        get_rebrickable_api_key_mock.return_value = None
 
         # Call method-under-test
-        self.assertRaises(Exception, brickowl2rebrickable.brickowl2rebrickable, None, orders, output_dir=output_dir)
+        self.assertRaises(Exception, brickowl2rebrickable.brickowl2rebrickable, None, None, orders, output_dir=output_dir)
 
         # Verification
         self.assertFalse(BrickOwlMock.called)

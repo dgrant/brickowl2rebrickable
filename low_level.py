@@ -5,7 +5,6 @@ import urllib.request
 
 __author__ = 'david'
 
-
 def do_http_get(url, params=None):
     """
     Perform an http get, returning the response data.

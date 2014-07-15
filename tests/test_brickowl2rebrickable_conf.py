@@ -2,7 +2,7 @@ import _io
 import unittest
 import brickowl2rebrickable_conf
 
-from mock import patch, MagicMock
+from mock import patch, MagicMock, mock_open
 
 def mock_open(mock=None, read_data='', lines=None):
     """

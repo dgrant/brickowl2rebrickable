@@ -3,6 +3,7 @@
 import argparse
 import brickowl
 import brickowl2rebrickable_conf
+import sys
 
 DEFAULT_OUTPUTDIR = '.'
 
@@ -18,7 +19,7 @@ def main():
     parser = argparse.ArgumentParser(description='Convert Brickowl orders into Rebrickable csv files')
     parser.add_argument('-b', '--brickowl_api_key', metavar='BRICKOWL_API_KEY',
                         help='Brickowl API key (overrides value in conf file')
-    parser.add_argument('orders', metavar='ORDER_NUM', type=int, nargs='+', help='Brickowl order number(s)')
+    parser.add_argument('orders', metavar='ORDER_NUM', nargs='+', help='Brickowl order number(s)')
     args = parser.parse_args()
 
     brickowl2rebrickable(args.brickowl_api_key, args.orders)

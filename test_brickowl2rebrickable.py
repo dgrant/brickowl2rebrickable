@@ -1,9 +1,11 @@
 import unittest
+import sys
 
 from mock import patch
 
 import brickowl2rebrickable
-import brickowl
+import brickowl2rebrickable_conf
+
 
 class TestBrickOwl2Rebrickable(unittest.TestCase):
 
@@ -81,3 +83,27 @@ class TestBrickOwl2Rebrickable(unittest.TestCase):
 
         # Verification
         self.assertFalse(BrickOwlMock.called)
+
+    @patch('brickowl2rebrickable.brickowl2rebrickable')
+    def test_main(self, brickowl2rebrickable_mock):
+        # Setup
+        sys.argv = ['./brickowl2rebrickable.py', '8827569', '1234']
+
+        # Call method-under-test
+        brickowl2rebrickable.main()
+
+        # Verification
+        brickowl2rebrickable_mock.assert_called_once_with(None, ['8827569', '1234'])
+
+    @patch('brickowl2rebrickable.brickowl2rebrickable')
+    def test_main_with_api_key(self, brickowl2rebrickable_mock):
+        # Setup
+        api_key = 'api_key'
+        sys.argv = ['./brickowl2rebrickable.py', '-b', api_key, '1234']
+
+        # Call method-under-test
+        brickowl2rebrickable.main()
+
+        # Verification
+        brickowl2rebrickable_mock.assert_called_once_with(api_key, ['1234'])
+

@@ -1,12 +1,10 @@
 import unittest
-from mock import Mock, MagicMock, patch
+from mock import Mock, MagicMock, patch, call
 
 import low_level
 import brickowl
 
 class TestBrickOwl(unittest.TestCase):
-    def setUp(self):
-        pass
 
     @patch('low_level.do_http_get')
     def test_fetch_order(self, do_http_get_mock):
@@ -41,3 +39,15 @@ class TestBrickOwl(unittest.TestCase):
         expected_rows = [['2412', '72', '10'], ['63868', '15', '4']]
         write_csv_file_mock.assert_called_once_with('./brick_owl_order_{0}.csv'.format(order_id), expected_rows,
                                                     ['Part', 'Color', 'Num'])
+
+    def test_export_to_rebrickable_csvs(self):
+        # Setup
+        b = brickowl.BrickOwl("API_KEY")
+        b.export_to_rebrickable_csv = Mock()
+
+        # Call method-under-test
+        b.export_to_rebrickable_csvs(['1', '2'], output_dir='.')
+
+        # Verification
+        self.assertEqual(b.export_to_rebrickable_csv.mock_calls, [call('1', '.'), call('2', '.')])
+

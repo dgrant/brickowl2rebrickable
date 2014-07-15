@@ -1,7 +1,6 @@
 import unittest
 
 from mock import patch, Mock, sentinel
-from numpy.f2py.auxfuncs import l_and
 
 import rebrickable
 

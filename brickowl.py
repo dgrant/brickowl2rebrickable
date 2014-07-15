@@ -1,8 +1,8 @@
-
 import os
 import json
 import low_level
 import rebrickable
+
 
 class BrickOwl(object):
 
@@ -31,18 +31,19 @@ class BrickOwl(object):
         # Create a line for Rebrickable CSV file
         rows = []
         for item in brick_owl_order_json:
-            #print(item)
+            # print(item)
             done = False
-            # TODO: need to change this to be smarter, to choose ldraw or design_id or peeron_id, depending on which one has more sets in Rebrickable
-            #for id_type in ('ldraw', 'design_id',):
+            # TODO: need to change this to be smarter, to choose ldraw or design_id or peeron_id, depending on which
+            # one has more sets in Rebrickable
+            # for id_type in ('ldraw', 'design_id',):
             for id_type in ('design_id', 'ldraw',):
-                #print("Trying id_type", id_type)
+                # print("Trying id_type", id_type)
                 if not done:
-                    for id in item['ids']:
-                        #print('id=', id)
-                        if id['type'] == id_type:
-                            part_id = id['id']
-                            #print('part_id=', part_id)
+                    for _id in item['ids']:
+                        # print('id=', id)
+                        if _id['type'] == id_type:
+                            part_id = _id['id']
+                            # print('part_id=', part_id)
                             done = True
                             break
                 if done:
@@ -52,8 +53,8 @@ class BrickOwl(object):
                 continue
             rows.append([part_id, item['rebrickable_color_id'], item['ordered_quantity']])
 
-        low_level.write_csv_file(os.path.join(output_dir, 'brick_owl_order_{0}.csv'.format(order_id)), rows, ['Part', 'Color', 'Num'])
-
+        low_level.write_csv_file(os.path.join(output_dir, 'brick_owl_order_{0}.csv'.format(order_id)),
+                                 rows, ['Part', 'Color', 'Num'])
 
     def export_to_rebrickable_csvs(self, order_ids, output_dir):
         for order_id in order_ids:

@@ -3,17 +3,20 @@
 import argparse
 import brickowl
 import brickowl2rebrickable_conf
-import sys
+
 
 DEFAULT_OUTPUTDIR = '.'
+
 
 def brickowl2rebrickable(brickowl_api_key, brickowl_orders, output_dir=DEFAULT_OUTPUTDIR):
     if brickowl_api_key is None:
         brickowl_api_key = brickowl2rebrickable_conf.get_brickowl_api_key()
         if brickowl2rebrickable_conf.get_brickowl_api_key() is None:
-            raise Exception("No BrickOwl API key in {0} or on command line".format(brickowl2rebrickable_conf.CONF_FILE_NAME))
+            raise Exception("No BrickOwl API key in {0} or on command line".format(
+                brickowl2rebrickable_conf.CONF_FILE_NAME))
     b = brickowl.BrickOwl(brickowl_api_key)
     b.export_to_rebrickable_csvs(brickowl_orders, output_dir=output_dir)
+
 
 def main():
     parser = argparse.ArgumentParser(description='Convert Brickowl orders into Rebrickable csv files')

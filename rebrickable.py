@@ -1,7 +1,6 @@
-import urllib.request
-
 import rebrickable_colors
 import low_level
+
 
 class Rebrickable(object):
 

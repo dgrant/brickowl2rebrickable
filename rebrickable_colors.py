@@ -1,4 +1,4 @@
-from html.parser import HTMLParser
+import html.parser
 
 __author__ = 'david'
 
@@ -14,7 +14,7 @@ def intarray(data):
     return [int(x) for x in strarray(data)]
 
 
-class ColorTableParser(HTMLParser):
+class ColorTableParser(html.parser.HTMLParser):
     TYPES = {'ID': int,
              'Name': str,
              'RGB': str,
@@ -25,11 +25,10 @@ class ColorTableParser(HTMLParser):
              'LEGO Color': strarray,
              'LDraw Color': intarray,
              'BrickLink Color': intarray,
-             'Peeron Color': strarray,
-            }
+             'Peeron Color': strarray}
 
     def __init__(self):
-        super().__init__()
+        html.parser.HTMLParser.__init__(self)
         self._in_table = False
         self._in_row = False
         self._in_col = False

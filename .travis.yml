@@ -2,7 +2,7 @@ language: python
 python:
   - "3.4"
 install:
-  - pip install coverage coveralls pylint pep8
+  - pip install coverage coveralls
 script:
   - nosetests --with-coverage --cover-inclusive --exclude='.*integration.*'
 after_success:

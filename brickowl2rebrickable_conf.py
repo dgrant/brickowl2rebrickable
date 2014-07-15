@@ -14,5 +14,3 @@ def get_brickowl_api_key():
         return _get_config()['DEFAULT']['BrickOwlApiKey']
     except KeyError:
         return None
-
-

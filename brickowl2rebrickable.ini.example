@@ -1,2 +1,3 @@
 [DEFAULT]
-BrickOwlApiKey = <key goes here>
+BrickOwlApiKey = <api key goes here>
+RebrickableApiKey = <api key goes here>

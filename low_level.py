@@ -15,6 +15,7 @@ def do_http_get(url, params=None):
     """
     if params is not None:
         url = (url + '?%s') % urllib.parse.urlencode(params)
+    # print('url=', url)
     f = urllib.request.urlopen(url)
     return f.read().decode('utf8')
 

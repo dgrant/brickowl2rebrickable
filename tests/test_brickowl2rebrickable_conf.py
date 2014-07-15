@@ -45,3 +45,21 @@ class TestBrickOwl2RebrickableConf(unittest.TestCase):
         with patch('builtins.open', m, create=True):
             ret = brickowl2rebrickable_conf.get_brickowl_api_key()
             self.assertEqual(ret, 'e70ed76dae2a9eb1869e4b1ea88ac2b4221ae94fc05e3a8a0e58f41614924f47')
+
+    def test_rebrickable_api_key_no_key(self):
+        lines = ['[DEFAULT]',
+                 'BrickOwlApiKey = PjWYDE0kIP']
+
+        m = mock_open(lines=lines)
+        with patch('builtins.open', m, create=True):
+            ret = brickowl2rebrickable_conf.get_rebrickable_api_key()
+            self.assertEqual(ret, None)
+
+    def test_rebrickable_api_key(self):
+        lines = ['[DEFAULT]',
+                 'RebrickableApiKey = PjWYDE0kIP']
+
+        m = mock_open(lines=lines)
+        with patch('builtins.open', m, create=True):
+            ret = brickowl2rebrickable_conf.get_rebrickable_api_key()
+            self.assertEqual(ret, 'PjWYDE0kIP')

@@ -1,13 +1,13 @@
 import unittest
 
-from mock import patch, Mock, sentinel
+from mock import patch, Mock, sentinel, call
 
 import rebrickable
 
 class TestRebrickable(unittest.TestCase):
 
     def setUp(self):
-        self.rebrickable = rebrickable.Rebrickable()
+        self.rebrickable = rebrickable.Rebrickable('API_KEY')
 
     def test_get_color_conversion_table(self):
         # Setup
@@ -48,3 +48,25 @@ class TestRebrickable(unittest.TestCase):
         ColorTable_mock.assert_called_once_with(sentinel.table_data)
         color_table_parser.feed.assert_called_once_with(sentinel.html)
         self.assertEqual(ret, color_table)
+
+    @patch('low_level.do_http_get')
+    def test_get_best_part_match(self, do_http_get_mock):
+        # Setup
+        api_url = 'http://rebrickable.com/api/get_part'
+        results = {'1': '{"part_id":"1","colors":[{"ldraw_color_id":"0","color_name":"Black","num_sets":"1025","num_parts":"100"},{"ldraw_color_id":"1","color_name":"Blue","num_sets":"530","num_parts":"50"}]}',
+                   '2': '{"part_id":"2","colors":[{"ldraw_color_id":"0","color_name":"Black","num_sets":"1025","num_parts":"100"},{"ldraw_color_id":"1","color_name":"Blue","num_sets":"530","num_parts":"200"}]}',
+                   'invalid part num': 'NOPART'}
+        def result(*args, **kwargs):
+            return results[kwargs['params']['part_id']]
+
+        do_http_get_mock.side_effect = result
+
+        # Call method-under-test
+        self.rebrickable.get_best_part_match(['1', '2', 'invalid part num'])
+        best_part = self.rebrickable.get_best_part_match(['1', '2', 'invalid part num']) # Calling again shouldn't increase number of http calls as it is memoized
+
+        # Verification
+        self.assertEqual(do_http_get_mock.mock_calls, [call(api_url, params={'key': 'API_KEY', 'part_id': '1', 'format': 'json'}),
+                                                       call(api_url, params={'key': 'API_KEY', 'part_id': '2', 'format': 'json'}),
+                                                       call(api_url, params={'key': 'API_KEY', 'part_id': 'invalid part num', 'format': 'json'})])
+        self.assertEqual(best_part, '2')

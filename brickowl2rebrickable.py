@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+Script to convert BrickOwl orders numbers into CSV files that can be imported into Rebrickable.
+"""
 
 import argparse
 
@@ -9,6 +12,15 @@ DEFAULT_OUTPUTDIR = '.'
 
 
 def brickowl2rebrickable(brickowl_api_key, rebrickable_api_key, brickowl_orders, output_dir=DEFAULT_OUTPUTDIR):
+    """
+    
+
+    :param brickowl_api_key:
+    :param rebrickable_api_key:
+    :param brickowl_orders:
+    :param output_dir:
+    :return:
+    """
     if brickowl_api_key is None:
         brickowl_api_key = brickowl2rebrickable_conf.get_brickowl_api_key()
         if brickowl_api_key is None:

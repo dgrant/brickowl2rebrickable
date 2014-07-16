@@ -21,16 +21,25 @@ class BrickOwl(object):
 
     def fetch_order(self, order_id):
         """
-        :param order_id:
-        :return:
+        Fetch an order from BrickOwl.
+
+        :param order_id: BrickOwl order id
+        :return: order result as a dictionary
         """
         params = {'key': self._api_key, 'order_id': order_id}
-        return low_level.do_http_get(self.URL, params)
+        ret_json = low_level.do_http_get(self.URL, params)
+        ret_dict = json.loads(ret_json)
+        return ret_dict
 
     def export_to_rebrickable_csv(self, order_id, output_dir):
-        order_json = self.fetch_order(order_id)
-        # print(order_json)
-        brick_owl_order_json = json.loads(order_json)
+        """
+        Export a BrickOwl order to a Rebrickable CSV file.
+
+        :param order_id: BrickOwl order id
+        :param output_dir: the directory where the .csv file should be saved
+        :return: nothing
+        """
+        brick_owl_order_json = self.fetch_order(order_id)
 
         # Fix up colors
         for item in brick_owl_order_json:
@@ -69,5 +78,12 @@ class BrickOwl(object):
                                  rows, ['Part', 'Color', 'Num'])
 
     def export_to_rebrickable_csvs(self, order_ids, output_dir):
+        """
+        Export BrickOwl orders to a Rebrickable CSV files.
+
+        :param order_ids: a list of BrickOwl order ids
+        :param output_dir: the directory where the .csv files should be saved
+        :return: nothing
+        """
         for order_id in order_ids:
             self.export_to_rebrickable_csv(order_id, output_dir)

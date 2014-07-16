@@ -1,7 +1,7 @@
 import unittest
 import rebrickable_colors
 
-OPEN_TABLE_TAG = "<table class='table'>"
+OPEN_TABLE_TAG = "<html><header></header><body><table class='table'>"
 HEADER = """<tr class='row_header'>
                     <td></td>
                     <td>ID</td>
@@ -22,7 +22,7 @@ COLOR_ROW2_TRANS_BLACK = "<tr><td><img src='/img/pieces/32/3003.png' height='50p
 COLOR_ROW3_CHROME_SILVER = "<tr><td><img src='/img/pieces/383/3003.png' height='50px'></td><td>383</td><td>Chrome Silver</td><td>#E0E0E0</td><td>2363</td><td>428</td><td>1977</td><td>2014</td><td>{\"Metalized Silver\"}</td><td>{383}</td><td>{22}</td><td>{ChromeSilver}</td></tr>"
 COLOR_ROW4_WHITE = "<tr><td><img src='/img/pieces/15/3003.png' height='50px'></td><td>15</td><td>White</td><td>#FFFFFF</td><td>248682</td><td>6225</td><td>1950</td><td>2014</td><td>{White}</td><td>{15}</td><td>{1}</td><td>{White}</td></tr>"
 COLOR_ROW5_BROWN = "<tr><td><img src='/img/pieces/6/3003.png' height='50px'></td><td>6</td><td>Brown</td><td>#583927</td><td>9037</td><td>905</td><td>1974</td><td>2014</td><td>{\"Earth Orange\",Brown}</td><td>{6}</td><td>{8}</td><td>{OldBrown}</td></tr>"
-CLOSE_TABLE_TAG = "</table>"
+CLOSE_TABLE_TAG = "</table></body></html>"
 WHOLE_TABLE = OPEN_TABLE_TAG + HEADER + "%s" + CLOSE_TABLE_TAG
 
 class ColorTableParserTest(unittest.TestCase):

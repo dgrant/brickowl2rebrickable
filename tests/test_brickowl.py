@@ -42,7 +42,7 @@ class TestBrickOwl(unittest.TestCase):
           "ids":[{"id":"4535737","type":"item_no"},{"id":"4535737","type":"item_no"},{"id":"537281-92","type":"boid"},{"id":"63868","type":"design_id"},{"id":"63868","type":"design_id"},{"id":"63868","type":"ldraw"},{"id":"63868","type":"peeron_id"}]}]
         """
         r = RebrickableMock.return_value
-        r.get_color_id_from_brick_owl_name.side_effect = lambda x: color_mapping[x]
+        r.get_colorid_from_brickowl_name.side_effect = lambda x: color_mapping[x]
         r.get_best_part_match.return_value = 'best_id'
 
         # Call method-under-test
@@ -70,7 +70,7 @@ class TestBrickOwl(unittest.TestCase):
           "ids":[{"id":"2412","type":"design_id"},{"id":"2412b","type":"ldraw"},{"id":"2412b","type":"peeron_id"},{"id":"363948-50","type":"boid"},{"id":"4210631","type":"item_no"},{"id":"4210631","type":"item_no"}]}]
         """
         r = RebrickableMock.return_value
-        r.get_color_id_from_brick_owl_name.side_effect = lambda x: color_mapping[x]
+        r.get_colorid_from_brickowl_name.side_effect = lambda x: color_mapping[x]
         r.get_best_part_match.return_value = None  # make the best part match function return None, ie. no parts found on rebrickable
 
         # Call method-under-test

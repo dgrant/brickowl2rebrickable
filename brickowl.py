@@ -1,12 +1,17 @@
+"""
+BrickOwl API class
+"""
 import os
 import json
-import sys
 
 import low_level
 import rebrickable
 
 
 class BrickOwl(object):
+    """
+    BrickOwl API.
+    """
 
     URL = 'https://api.brickowl.com/v1/order/items'
 
@@ -15,6 +20,10 @@ class BrickOwl(object):
         self.rebrickable = rebrickable.Rebrickable(rebrickable_api_Key)
 
     def fetch_order(self, order_id):
+        """
+        :param order_id:
+        :return:
+        """
         params = {'key': self._api_key, 'order_id': order_id}
         return low_level.do_http_get(self.URL, params)
 
@@ -28,24 +37,23 @@ class BrickOwl(object):
             color_name = item['color_name']
             if color_name == '':
                 continue
-            item['rebrickable_color_id'] = self.rebrickable.get_color_id_from_brick_owl_name(color_name)
+            item['rebrickable_color_id'] = self.rebrickable.get_colorid_from_brickowl_name(color_name)
 
         # Create a line for Rebrickable CSV file
         rows = []
         for item in brick_owl_order_json:
-            if 'rebrickable_color_id' not in  item:
+            if 'rebrickable_color_id' not in item:
                 print('!!! Skipping item "{0}" because it has no color'.format(item['name']))
                 continue
             # print(item)
-            done = False
-            # TODO: need to change this to be smarter, to choose ldraw or design_id or peeron_id, depending on which
-            # one has more sets in Rebrickable
-            # for id_type in ('ldraw', 'design_id',):
             ids = []
             design_id = None
             for _id in item['ids']:
+                # Check that the type is one of the valid ones for searching in rebrickable
                 if _id['type'] not in ['ldraw', 'design_id', 'peeron_id']:
                     continue
+                # Record the design_id. design_id is used as a backup, just in case none of the other part numbers
+                # are good. design_id will be OK.
                 if _id['type'] == 'design_id':
                     design_id = _id['id']
                 the_id = _id['id']
@@ -53,7 +61,7 @@ class BrickOwl(object):
                     ids.append(the_id)
             best_id = self.rebrickable.get_best_part_match(ids)
             # Just in case none of them can be found on rebrickable, use the design_id
-            if best_id == None:
+            if best_id is None:
                 best_id = design_id
             rows.append([best_id, item['rebrickable_color_id'], item['ordered_quantity']])
 

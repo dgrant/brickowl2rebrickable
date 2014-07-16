@@ -3,7 +3,6 @@ import hashlib
 import urllib.parse
 import urllib.request
 
-__author__ = 'david'
 
 def do_http_get(url, params=None):
     """
@@ -16,8 +15,8 @@ def do_http_get(url, params=None):
     if params is not None:
         url = (url + '?%s') % urllib.parse.urlencode(params)
     # print('url=', url)
-    f = urllib.request.urlopen(url)
-    return f.read().decode('utf8')
+    url_handle = urllib.request.urlopen(url)
+    return url_handle.read().decode('utf8')
 
 
 def write_csv_file(filename, rows, header=None):
@@ -30,8 +29,8 @@ def write_csv_file(filename, rows, header=None):
 
 
 def md5sum_file(filename):
-    m = hashlib.md5()
-    with open(filename) as f:
-        for line in f:
-            m.update(line.encode('utf8'))
-    return m.digest()
+    md5sum = hashlib.md5()
+    with open(filename) as file_handle:
+        for line in file_handle:
+            md5sum.update(line.encode('utf8'))
+    return md5sum.digest()

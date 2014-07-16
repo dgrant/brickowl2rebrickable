@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 import argparse
+
 import brickowl
 import brickowl2rebrickable_conf
-
 
 DEFAULT_OUTPUTDIR = '.'
 
@@ -19,8 +19,8 @@ def brickowl2rebrickable(brickowl_api_key, rebrickable_api_key, brickowl_orders,
         if rebrickable_api_key is None:
             raise Exception('No Rebrickable API key in {0} or on command line'.format(
                 brickowl2rebrickable_conf.CONF_FILE_NAME))
-    b = brickowl.BrickOwl(brickowl_api_key, rebrickable_api_key)
-    b.export_to_rebrickable_csvs(brickowl_orders, output_dir=output_dir)
+    brickowl_obj = brickowl.BrickOwl(brickowl_api_key, rebrickable_api_key)
+    brickowl_obj.export_to_rebrickable_csvs(brickowl_orders, output_dir=output_dir)
 
 
 def main():

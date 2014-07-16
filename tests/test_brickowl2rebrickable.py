@@ -82,11 +82,27 @@ class TestBrickOwl2Rebrickable(unittest.TestCase):
     @patch('brickowl2rebrickable_conf.get_rebrickable_api_key')
     @patch('brickowl2rebrickable_conf.get_brickowl_api_key')
     @patch('brickowl.BrickOwl')
-    def test_brickowl2rebrickable_no_apikeys(self, BrickOwlMock, get_brickowl_api_key_mock, get_rebrickable_api_key_mock):
+    def test_brickowl2rebrickable_no_brickowl_apikey(self, BrickOwlMock, get_brickowl_api_key_mock, get_rebrickable_api_key_mock):
         # Setup
         orders = ['1', '2']
         output_dir = 'blather'
         get_brickowl_api_key_mock.return_value = None
+        get_rebrickable_api_key_mock.return_value = 'lkadlkfa'
+
+        # Call method-under-test
+        self.assertRaises(Exception, brickowl2rebrickable.brickowl2rebrickable, None, None, orders, output_dir=output_dir)
+
+        # Verification
+        self.assertFalse(BrickOwlMock.called)
+
+    @patch('brickowl2rebrickable_conf.get_rebrickable_api_key')
+    @patch('brickowl2rebrickable_conf.get_brickowl_api_key')
+    @patch('brickowl.BrickOwl')
+    def test_brickowl2rebrickable_no_rebrickable_apikey(self, BrickOwlMock, get_brickowl_api_key_mock, get_rebrickable_api_key_mock):
+        # Setup
+        orders = ['1', '2']
+        output_dir = 'blather'
+        get_brickowl_api_key_mock.return_value = 'alkdaalkjd'
         get_rebrickable_api_key_mock.return_value = None
 
         # Call method-under-test
@@ -94,6 +110,7 @@ class TestBrickOwl2Rebrickable(unittest.TestCase):
 
         # Verification
         self.assertFalse(BrickOwlMock.called)
+
 
     @patch('brickowl2rebrickable.brickowl2rebrickable')
     def test_main(self, brickowl2rebrickable_mock):

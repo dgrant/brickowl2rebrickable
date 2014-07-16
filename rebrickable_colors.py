@@ -84,9 +84,9 @@ class ColorTable(object):
         self._lego_color_to_id = {}
         self._peeron_color_to_id = {}
         self._color_name_to_id = {}
-        self._parse(data)
+        self._parse()
 
-    def _parse(self, data):
+    def _parse(self):
         for color in self._data:
             if 'LEGO Color' in color:
                 for lego_color_name in color['LEGO Color']:
@@ -97,7 +97,7 @@ class ColorTable(object):
             if 'Name' in color:
                 self._color_name_to_id[color['Name'].lower()] = color['ID']
 
-    def get_color_id_from_brick_owl_name(self, name):
+    def get_colorid_from_brickowl_name(self, name):
         name = name.lower()
         if name in self._lego_color_to_id:
             return self._lego_color_to_id[name]
@@ -106,9 +106,9 @@ class ColorTable(object):
         if name in self._color_name_to_id:
             return self._color_name_to_id[name]
         if name.find('transparent') == 0:
-            return self.get_color_id_from_brick_owl_name(name.replace('transparent ', 'trans-'))
+            return self.get_colorid_from_brickowl_name(name.replace('transparent ', 'trans-'))
         if name.find('gray') != -1:
-            return self.get_color_id_from_brick_owl_name(name.replace('gray', 'grey'))
+            return self.get_colorid_from_brickowl_name(name.replace('gray', 'grey'))
 
         print("!!! Name:", name, "is unmatched")
         return None

@@ -5,6 +5,7 @@ import functools
 import rebrickable_colors
 import low_level
 
+
 def memoize(obj):
     cache = obj.cache = {}
 
@@ -16,16 +17,17 @@ def memoize(obj):
         return cache[key]
     return memoizer
 
+
 class Rebrickable(object):
 
     def __init__(self, api_key):
         self._color_table = None
         self.api_key = api_key
 
-    def get_color_id_from_brick_owl_name(self, brickowl_name):
+    def get_colorid_from_brickowl_name(self, brickowl_name):
         if self._color_table is None:
             self._color_table = self._get_color_conversion_table()
-        return self._color_table.get_color_id_from_brick_owl_name(brickowl_name)
+        return self._color_table.get_colorid_from_brickowl_name(brickowl_name)
 
     def _get_color_conversion_table(self):
         html = low_level.do_http_get('http://rebrickable.com/colors')
@@ -36,7 +38,9 @@ class Rebrickable(object):
 
     @memoize
     def _get_num_parts(self, _id):
-        result = low_level.do_http_get('http://rebrickable.com/api/get_part', params=collections.OrderedDict({'key': self.api_key, 'part_id': _id, 'format': 'json'}))
+        result = low_level.do_http_get('http://rebrickable.com/api/get_part',
+                                       params=collections.OrderedDict(
+                                           {'key': self.api_key, 'part_id': _id, 'format': 'json'}))
 
         num_parts = 0
         if result != 'NOPART':

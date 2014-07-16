@@ -15,10 +15,10 @@ class TestRebrickable(unittest.TestCase):
         self.rebrickable._get_color_conversion_table = Mock(return_value = mock_color_table)
 
         # Call method-under-test
-        self.rebrickable.get_color_id_from_brick_owl_name('White')
+        self.rebrickable.get_colorid_from_brickowl_name('White')
 
         # Verification
-        mock_color_table.get_color_id_from_brick_owl_name.assert_called_once_with('White')
+        mock_color_table.get_colorid_from_brickowl_name.assert_called_once_with('White')
 
     def test_get_color_conversion_table_table_cached(self):
         # Setup
@@ -26,10 +26,10 @@ class TestRebrickable(unittest.TestCase):
         self.rebrickable._color_table = mock_color_table
 
         # Call method-under-test
-        self.rebrickable.get_color_id_from_brick_owl_name('White')
+        self.rebrickable.get_colorid_from_brickowl_name('White')
 
         # Verification
-        mock_color_table.get_color_id_from_brick_owl_name.assert_called_once_with('White')
+        mock_color_table.get_colorid_from_brickowl_name.assert_called_once_with('White')
 
     @patch('rebrickable_colors.ColorTable')
     @patch('rebrickable_colors.ColorTableParser')

@@ -67,7 +67,7 @@ class ColorTableParser(html.parser.HTMLParser):
 
     def handle_data(self, data):
         if self._in_row and self._in_col:
-                if data == 'ID':
+            if data == 'ID':
                 self._in_header = True
                 self._row -= 1
 

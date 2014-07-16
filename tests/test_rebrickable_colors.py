@@ -85,7 +85,7 @@ class ColorTableTest(unittest.TestCase):
         # Call method-under-test
         self.instance = rebrickable_colors.ColorTable(self.data)
 
-    def test__parse(self):
+    def test_parse(self):
         instance = self.instance
 
         # Verification

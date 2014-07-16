@@ -13,13 +13,14 @@ DEFAULT_OUTPUTDIR = '.'
 
 def brickowl2rebrickable(brickowl_api_key, rebrickable_api_key, brickowl_orders, output_dir=DEFAULT_OUTPUTDIR):
     """
-    
+    Given a list of BrickOwl order ids, convert the order information into a list of parts in Rebrickable format
+    in a CSV file.
 
-    :param brickowl_api_key:
-    :param rebrickable_api_key:
-    :param brickowl_orders:
-    :param output_dir:
-    :return:
+    :param brickowl_api_key: BrickOwl.com API key
+    :param rebrickable_api_key: Rebrickable.com API key
+    :param brickowl_orders: a list of BrickOwl order IDs
+    :param output_dir: a directory where the Rebrickable CSV files should be saved.
+    :return: nothing
     """
     if brickowl_api_key is None:
         brickowl_api_key = brickowl2rebrickable_conf.get_brickowl_api_key()
@@ -36,6 +37,11 @@ def brickowl2rebrickable(brickowl_api_key, rebrickable_api_key, brickowl_orders,
 
 
 def main():
+    """
+    Main-entry point. Parse command-line arguments then call brickowl2rebrickable.
+
+    :return: nothing
+    """
     parser = argparse.ArgumentParser(description='Convert Brickowl orders into Rebrickable csv files')
     parser.add_argument('-b', '--brickowl_api_key', metavar='BRICKOWL_API_KEY',
                         help='Brickowl API key (overrides value in conf file')

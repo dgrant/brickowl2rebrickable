@@ -9,10 +9,10 @@ class TestRebrickable(unittest.TestCase):
     def setUp(self):
         self.rebrickable = rebrickable.Rebrickable('API_KEY')
 
-    def test_get_color_conversion_table(self):
+    def test_get_colorid_from_brickowl_name(self):
         # Setup
         mock_color_table = Mock()
-        self.rebrickable._get_color_conversion_table = Mock(return_value = mock_color_table)
+        rebrickable.get_color_conversion_table = Mock(return_value = mock_color_table)
 
         # Call method-under-test
         self.rebrickable.get_colorid_from_brickowl_name('White')
@@ -20,7 +20,7 @@ class TestRebrickable(unittest.TestCase):
         # Verification
         mock_color_table.get_colorid_from_brickowl_name.assert_called_once_with('White')
 
-    def test_get_color_conversion_table_table_cached(self):
+    def test_get_colorid_from_brickowl_name_table_cached(self):
         # Setup
         mock_color_table = Mock()
         self.rebrickable._color_table = mock_color_table
@@ -34,7 +34,7 @@ class TestRebrickable(unittest.TestCase):
     @patch('rebrickable_colors.ColorTable')
     @patch('rebrickable_colors.ColorTableParser')
     @patch('low_level.do_http_get')
-    def test__get_color_conversion_table(self, do_http_get_mock, ColorTableParser_mock, ColorTable_mock):
+    def test_get_color_conversion_table(self, do_http_get_mock, ColorTableParser_mock, ColorTable_mock):
         # Setup
         do_http_get_mock.return_value = sentinel.html
         color_table_parser = ColorTableParser_mock.return_value
@@ -42,7 +42,7 @@ class TestRebrickable(unittest.TestCase):
         color_table = ColorTable_mock.return_value
 
         # Call method-under-test
-        ret = self.rebrickable._get_color_conversion_table()
+        ret = rebrickable.get_color_conversion_table()
 
         # Verification
         ColorTable_mock.assert_called_once_with(sentinel.table_data)

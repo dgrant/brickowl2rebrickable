@@ -55,7 +55,7 @@ class TestBrickOwl(unittest.TestCase):
         expected_rows = [['best_id', '72', '10'], ['best_id', '15', '4']]
         self.assertEqual(r.get_best_part_match.mock_calls, [call(['2412', '2412b']), call(['63868'])])
         write_csv_file_mock.assert_called_once_with('./brick_owl_order_{0}.csv'.format(order_id), expected_rows,
-                                                    ['Part', 'Color', 'Num'])
+                                                    header=['Part', 'Color', 'Num'])
 
     @patch('low_level.write_csv_file')
     @patch('rebrickable.Rebrickable')
@@ -83,7 +83,7 @@ class TestBrickOwl(unittest.TestCase):
         expected_rows = [['2412', '72', '10']]
         self.assertEqual(r.get_best_part_match.mock_calls, [call(['2412', '2412b'])])
         write_csv_file_mock.assert_called_once_with('./brick_owl_order_{0}.csv'.format(order_id), expected_rows,
-                                                    ['Part', 'Color', 'Num'])
+                                                    header=['Part', 'Color', 'Num'])
 
     @patch('rebrickable.Rebrickable')
     def test_export_to_rebrickable_csvs(self, RebrickableMock):

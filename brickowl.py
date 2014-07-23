@@ -75,7 +75,7 @@ class BrickOwl(object):
             rows.append([best_id, item['rebrickable_color_id'], item['ordered_quantity']])
 
         low_level.write_csv_file(os.path.join(output_dir, 'brick_owl_order_{0}.csv'.format(order_id)),
-                                 rows, ['Part', 'Color', 'Num'])
+                                 rows, header=['Part', 'Color', 'Num'])
 
     def export_to_rebrickable_csvs(self, order_ids, output_dir):
         """

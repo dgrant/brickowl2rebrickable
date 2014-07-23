@@ -50,12 +50,20 @@ def write_csv_file(filename, rows, header=None):
     :param header: an optional list of column names to go in the header of the CSV file
     :return: nothing
     """
-    with open(filename, 'w') as handle:
-        writer = csv.writer(handle, delimiter=',')
+    with open(filename, 'w') as csvfile:
+        writer = csv.writer(csvfile, delimiter=',')
         if header is not None:
             writer.writerow(header)
         for row in rows:
             writer.writerow(row)
+
+def read_csv_file(filename):
+    rows = []
+    with open(filename) as csvfile:
+        reader = csv.reader(csvfile, delimiter=',')
+        for row in reader:
+            rows.append(row)
+    return rows
 
 
 def md5sum_file(filename):

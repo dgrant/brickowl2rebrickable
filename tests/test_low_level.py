@@ -88,17 +88,32 @@ class TestLowLevel(unittest.TestCase):
         rows = [['a', 'b'], ['c', 'd']]
         header = ['head', 'er']
         m = mock_open()
+        handle = m()
         with patch('low_level.open', m, create=True):
             # Call method-under-test
             low_level.write_csv_file('filename', rows, header=header)
 
         # Verification
         m.assert_called_with('filename', 'w')
-        #handle = m.return_value
-        #csv_writer_mock.assert_called_once_with(handle, delimeter=',')
+        #csv_writer_mock.assert_called_with(handle, delimeter=',')
         expected_calls = [call(['head', 'er']), call(['a', 'b']), call(['c', 'd'])]
-        writer = csv_writer_mock.return_value
-        self.assertEqual(writer.writerow.call_args_list, expected_calls)
+        self.assertEqual(csv_writer_mock.return_value.writerow.call_args_list, expected_calls)
+
+    @patch('csv.reader')
+    def test_read_csv_file(self, csv_reader_mock):
+        # Setup
+        rows = [['a', 'b'], ['c', 'd']]
+        m = mock_open()
+        handle = m()
+        csv_reader_mock.return_value.__iter__.return_value =  iter(rows)
+        with patch('low_level.open', m, create=True):
+            # Call method-under-test
+            ret = low_level.read_csv_file('filename')
+
+        # Verification
+        m.assert_called_with('filename')
+        csv_reader_mock.assert_called_once_with(handle, delimiter=',')
+        self.assertEqual(ret, rows)
 
     @patch('hashlib.md5')
     def test_md5sum_file(self, md5_mock):

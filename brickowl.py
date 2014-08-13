@@ -31,6 +31,13 @@ class BrickOwl(object):
         ret_dict = json.loads(ret_json)
         return ret_dict
 
+    def _fix_up_colors(self, brick_owl_order_json):
+        for item in brick_owl_order_json:
+            color_name = item['color_name']
+            if color_name == '':
+                continue
+            item['rebrickable_color_id'] = self.rebrickable.get_colorid_from_brickowl_name(color_name)
+
     def export_to_rebrickable_csv(self, order_id, output_dir):
         """
         Export a BrickOwl order to a Rebrickable CSV file.
@@ -42,11 +49,7 @@ class BrickOwl(object):
         brick_owl_order_json = self.fetch_order(order_id)
 
         # Fix up colors
-        for item in brick_owl_order_json:
-            color_name = item['color_name']
-            if color_name == '':
-                continue
-            item['rebrickable_color_id'] = self.rebrickable.get_colorid_from_brickowl_name(color_name)
+        self._fix_up_colors(brick_owl_order_json)
 
         # Create a line for Rebrickable CSV file
         rows = []

@@ -3,6 +3,7 @@ import argparse
 import collections
 import low_level
 
+
 def combine(list_of_list_of_parts):
     result = collections.OrderedDict()
     for list_of_parts in list_of_list_of_parts:
@@ -30,6 +31,7 @@ def combine_rebrickable_csv(csv_files, output_file):
         list_of_list_of_parts.append(rows[1:])
     combined_parts = combine(list_of_list_of_parts)
     low_level.write_csv_file(output_file, combined_parts, header=['Part', 'Color', 'Num'])
+
 
 def main():
     parser = argparse.ArgumentParser(description='Combine multiple Rebrickable csv files into one')

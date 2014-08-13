@@ -57,6 +57,7 @@ def write_csv_file(filename, rows, header=None):
         for row in rows:
             writer.writerow(row)
 
+
 def read_csv_file(filename):
     rows = []
     with open(filename) as csvfile:
